@@ -1,0 +1,32 @@
+<!doctype html>
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <title>Генерация описания</title>
+  <style>
+    p {
+      font-family: 'Times New Roman', Times, serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="head">
+    <div id="head_link1"><p> <a href="index.html">Главная страница</a></p></div>
+    <div id="head_link2"><p> <a href="foto.html">Описание фото</a></p></div>
+    <div id="head_link3"><p> <a href="video.html">Описание Видео</a></p></div>
+  </div>
+  <div>
+    <div id="right">
+      <button onclick="window.location.href='foto.html';" class="image-button">Генерация описания 
+        <br>к фото</button>
+    </div>
+    <div id="left">
+      <button onclick="window.location.href='video.html';" class="image-button">Генерация описания <br>к видео</button>
+  </div>
+</div>
+</body>
+</html>
+
+{%endblock%}

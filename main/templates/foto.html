@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+{% block content %}
+
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генерация</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <script src="{% static 'javascript.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'style1.css' %}">
+</head>
+
+<body>
+  <header>
+    <div id="head">
+      <div id="head_link1">
+        <p> <a href="index.html">Главная страница</a></p>
+      </div>
+      <div id="head_link2">
+        <p> <a href="foto.html">Описание фото</a></p>
+      </div>
+      <div id="head_link3">
+        <p> <a href="video.html">Описание Видео</a></p>
+      </div>
+    </div>
+  </header>
+  <div id="main">
+    <div id="drop-files" ondragover="return false">
+      <p>Перетащите изображение сюда</p>
+      <form id="frm">
+        <input type="file" id="uploadbtn" multiple />
+      </form>
+    </div>
+    <!-- Область предварительного просмотра -->
+    <div id="uploaded-holder">
+      <div id="dropped-files">
+        <!-- Кнопки загрузить и удалить, а также количество файлов -->
+        <div id="upload-button">
+          <center>
+            <span>0 Файлов</span>
+            <a href="#" class="upload">Загрузить</a>
+            <a href="#" class="delete">Удалить</a>
+            <!-- Прогресс бар загрузки -->
+            <div id="loading">
+              <div id="loading-bar">
+                <div class="loading-color"></div>
+              </div>
+              <div id="loading-content"></div>
+            </div>
+          </center>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div id="result">
+  
+  </div>
+
+</body>
+
+</html>
+
+{%endblock%}
