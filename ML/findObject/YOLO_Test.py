@@ -1,12 +1,12 @@
 import os
 from ultralytics import YOLO
-
+from collections import Counter
 
 model = YOLO('yolov8n.yaml')
 
 # Определяем существует ли тренерованная модель
-if os.path.isdir(r'runs/detect/train/weights'):
-  model = YOLO('runs/detect/train/weights/best.pt')
+if os.path.isdir(r'ml/findObject/runs/detect/train/weights'):
+  model = YOLO('ml/findObject/runs/detect/train/weights/best.pt')
 else:
   model = YOLO('yolov8n.pt')
 
@@ -20,12 +20,19 @@ classesName = model.names
 # Инспекция медиа
 results = model.predict("street.jpg", conf=0.3, iou = 0.9)
 
+# Функция для получение сколько и каких объектов на изображении по URL
+def objectFinder (url:str):
+  results = model.predict(url, conf = 0.3, iou = 0.9)
+  ret = []
 
-# Список результатов процесса
-for result in results:
-    boxes = result.boxes  # Объект Boxes для вывода ограничивающего прямоугольника
-    result.show()  # Вывод размеченного изображения
+  # Если передано несколько значений
+  for res in results:
+    boxes = res.boxes  # Объект Boxes для вывода ограничивающего прямоугольника
 
-    # Вывод результатов
-    for cls, conf in zip(boxes.cls, boxes.conf):
-      print(classesName[cls.item()], conf.item())
+    # Создание объекта в котором перечисляются сколько каких объектов
+    objects = {}
+    for className, count in Counter(boxes.cls.tolist()).items(): objects[classesName[className]] = count
+
+    ret.append(objects)
+
+  return ret 
