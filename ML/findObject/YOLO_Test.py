@@ -17,8 +17,8 @@ else:
 # Получение списка именн классов в наборе данных
 classesName = model.names
 
-# Инспекция медиа
-results = model.predict("street.jpg", conf=0.3, iou = 0.9)
+# # Инспекция медиа
+# results = model.predict("street.jpg", conf=0.3, iou = 0.9)
 
 # Функция для получение сколько и каких объектов на изображении по URL
 def objectFinder (url:str):

@@ -8,4 +8,5 @@ urlpatterns = [
     path('foto.html', views.photo, name = 'foto'),
     path('index.html', views.index, name = 'index'),
     path('video.html', views.video, name = 'video'),
+    path('api/descriptionImage/', views.descriptionImage, name='descriptionImage')
 ]

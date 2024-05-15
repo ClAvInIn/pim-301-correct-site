@@ -174,49 +174,68 @@ $(document).ready(function() {
 	
 	// Загрузка изображений на сервер
 	$('#upload-button .upload').click(function() {
-		
-		// Показываем прогресс бар
-		$("#loading").show();
-		// переменные для работы прогресс бара
-		var totalPercent = 100 / dataArray.length;
-		var x = 0;
-		
-		$('#loading-content').html('Загружен '+dataArray[0].name);
-		// Для каждого файла
-		$.each(dataArray, function(index, file) {	
-			// загружаем страницу и передаем значения, используя HTTP POST запрос 
-			$.post('upload.php', dataArray[index], function(data) {
-			
-				var fileName = dataArray[index].name;
-				++x;
-				
-				// Изменение бара загрузки
-				$('#loading-bar .loading-color').css({'width' : totalPercent*(x)+'%'});
-				// Если загрузка закончилась
-				if(totalPercent*(x) == 100) {
-					// Загрузка завершена
-					$('#loading-content').html('Загрузка завершена!');
-					
-					// Вызываем функцию удаления всех изображений после задержки 1 секунда
-					setTimeout(restartFiles, 1000);
-				// если еще продолжается загрузка	
-				} else if(totalPercent*(x) < 100) {
-					// Какой файл загружается
-					$('#loading-content').html('Загружается '+fileName);
-				}
-				
-				// Формируем в виде списка все загруженные изображения
-				// data формируется в upload.php
-				var dataSplit = data.split(':');
-				if(dataSplit[1] == 'загружен успешно') {
-					$('#uploaded-files').append('<li><a href="images/'+dataSplit[0]+'">'+fileName+'</a> загружен успешно</li>');
-								
-				} else {
-					$('#uploaded-files').append('<li><a href="images/'+data+'. Имя файла: '+dataArray[index].name+'</li>');
-				}
-				
+		// Для каждого изображения отправляем POST запрос для получения описания изображения 
+		dataArray.forEach(image => {
+			image.value = image.value.split(',')[1]
+			console.log("Send data", image);
+
+			fetch('/api/descriptionImage/', {
+				"method": "POST",
+				"body": JSON.stringify(image)
+			}).then((response) => {
+				return response.json();
+			}).then((data) => {
+				console.log(data);
+				// Вызываем функцию удаления всех изображений после задержки 1 секунда
+				setTimeout(restartFiles, 1000);
+				$('#result').append(`<div>Описание изображения: ${data.description}</div>`)
 			});
 		});
+
+
+		// // Показываем прогресс бар
+		// $("#loading").show();
+		// // переменные для работы прогресс бара
+		// var totalPercent = 100 / dataArray.length;
+		// var x = 0;
+		
+
+		
+
+		// Для каждого файла
+		// $.each(dataArray, function(index, file) {	
+		// 	// загружаем страницу и передаем значения, используя HTTP POST запрос 
+		// 	$.post('upload.php', dataArray[index], function(data) {
+			
+		// 		var fileName = dataArray[index].name;
+		// 		++x;
+				
+		// 		// Изменение бара загрузки
+		// 		$('#loading-bar .loading-color').css({'width' : totalPercent*(x)+'%'});
+		// 		// Если загрузка закончилась
+		// 		if(totalPercent*(x) == 100) {
+		// 			// Загрузка завершена
+		// 			$('#loading-content').html('Загрузка завершена!');
+					
+		
+		// 		// если еще продолжается загрузка	
+		// 		} else if(totalPercent*(x) < 100) {
+		// 			// Какой файл загружается
+		// 			$('#loading-content').html('Загружается '+fileName);
+		// 		}
+				
+		// 		// Формируем в виде списка все загруженные изображения
+		// 		// data формируется в upload.php
+		// 		var dataSplit = data.split(':');
+		// 		if(dataSplit[1] == 'загружен успешно') {
+		// 			$('#uploaded-files').append('<li><a href="images/'+dataSplit[0]+'">'+fileName+'</a> загружен успешно</li>');
+								
+		// 		} else {
+		// 			$('#uploaded-files').append('<li><a href="images/'+data+'. Имя файла: '+dataArray[index].name+'</li>');
+		// 		}
+				
+		// 	});
+		// });
 		// Показываем список загруженных файлов
 		$('#uploaded-files').show();
 		return false;

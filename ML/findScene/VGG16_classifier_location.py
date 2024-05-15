@@ -124,6 +124,14 @@ def trainModel():
   early_stop = EarlyStopping(monitor='accuracy', min_delta=0.0001, patience=2, verbose=1)
   model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
+  paths = loadPathsImages()
+  images = loadImages(paths)
+
+  X = np.asarray(resizeImages(images))
+  y = loadLabels()
+
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=True)
+
   model.fit(X_train, y_train, epochs=25, batch_size=256)
   model.save(model_path)
 
@@ -148,20 +156,5 @@ def predict(url:str):
   image = np.expand_dims(image, axis=0)
   pred = model.predict(image)
   return classes[np.argmax(pred) + 1]
-
-paths = loadPathsImages()
-images = loadImages(paths)
-
-X = np.asarray(resizeImages(images))
-y = loadLabels()
-
-del paths
-del images
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=True)
-
-del X
-del y
-
 
 # predict('sky.jpg')
