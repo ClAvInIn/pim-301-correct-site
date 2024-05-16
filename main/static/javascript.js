@@ -185,11 +185,11 @@ $(document).ready(function() {
 			}).then((response) => {
 				return response.json();
 			}).then((data) => {
-				console.log(data);
+				// console.log(data);
 				// Вызываем функцию удаления всех изображений после задержки 1 секунда
 				setTimeout(restartFiles, 1000);
 				$('#result').append(`<div>Описание изображения: ${data.description}</div>`)
-			});
+			})
 		});
 
 
